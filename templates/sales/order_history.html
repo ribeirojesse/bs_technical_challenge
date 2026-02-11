@@ -1,0 +1,85 @@
+{% extends "base/base.html" %}
+
+{% block page_title %}
+    Order History
+{% endblock %}
+
+{% block content %}
+
+<h2 class="text-3xl font-semibold mb-6 text-center text-gray-800">
+    Sales Orders
+</h2>
+
+{% if orders %}
+
+<div class="flex flex-col mt-6">
+    
+    {% for order in orders %}
+    <div class="bg-white shadow-md rounded-2xl hover:shadow-xl transition duration-300 p-4 mb-6">
+        
+        <div class="flex flex-col gap-1 mb-2">
+            <h3 class="text-lg font-semibold text-gray-800">
+                Order #{{ order.id }}
+            </h3>
+            <p class="text-gray-500 text-sm">
+                {{ order.created_at|date:"M d, Y H:i" }}
+            </p>
+            <p class="text-gray-700 font-medium">
+                Total: ${{ order.total }}
+            </p>
+        </div>
+
+        <details class="mt-2 border-t border-gray-200 pt-2">
+            <summary class="cursor-pointer font-medium text-gray-600 mb-2">
+                View items
+            </summary>
+
+            <div class="overflow-x-auto mt-2">
+                <table class="table table-zebra w-full">
+                    <thead>
+                        <tr class="bg-gray-50">
+                            <th class="w-16">Image</th>
+                            <th>Product</th>
+                            <th class="text-center">Qty</th>
+                            <th class="text-right">Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in order.items.all %}
+                        <tr>
+                            <td class="p-1">
+                                {% if item.product.image %}
+                                <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}"
+                                     class="h-12 w-12 object-contain mx-auto rounded">
+                                {% else %}
+                                <div class="h-12 w-12 bg-gray-100 flex items-center justify-center text-gray-400 text-xs rounded mx-auto">
+                                    No image
+                                </div>
+                                {% endif %}
+                            </td>
+                            <td class="font-medium text-gray-800">{{ item.product.name }}</td>
+                            <td class="text-center">{{ item.quantity }}</td>
+                            <td class="text-right text-gray-700">${{ item.price }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+        </details>
+
+    </div>
+    {% endfor %}
+
+</div>
+
+{% else %}
+
+<div class="flex flex-col items-center justify-center mt-16 text-center text-gray-400 gap-2">
+    <p class="text-lg font-medium">You have no orders yet.</p>
+    <p class="text-sm text-gray-500">Your past purchases will appear here.</p>
+</div>
+
+{% endif %}
+
+{% endblock %}

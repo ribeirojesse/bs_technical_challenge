@@ -47,7 +47,7 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware'
 ]
 
 ROOT_URLCONF = '_project.urls'
@@ -69,6 +69,12 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = '_project.wsgi.application'
+
+TEMPLATES[0]["OPTIONS"]["context_processors"] += [
+    "sales.context_processors.cart_item_count",
+]
+
+
 
 
 # Database

@@ -1,0 +1,21 @@
+<div hx-swap-oob="beforeend:#toast-container">
+    <div
+        x-data="{ show: true }"
+        x-show="show"
+        x-init="setTimeout(() => show = false, 2800)"
+
+        style="
+            pointer-events: auto;
+            background: #111;
+            color: white;
+            padding: 14px 18px;
+            border-radius: 14px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+            width: 280px;
+        "
+
+        class="animate-fade-in-up"
+    >
+        {{ message }}
+    </div>
+</div>

@@ -1,0 +1,70 @@
+<div class="cart-container flex items-center gap-2">
+
+    {% if product.stock_qty == 0 %}
+        <button class="btn btn-disabled h-10 min-w-[90px] rounded-xl">
+            Out of stock
+        </button>
+
+    {% elif cart_item %}
+        <div class="flex items-center justify-center gap-2 w-full">
+
+            <button
+                class="btn btn-sm btn-outline h-10 w-10 rounded-xl flex items-center justify-center"
+                hx-post="{% url 'sales:update_quantity' product.id %}?target_id={{ target_id }}"
+                hx-vals='{"quantity": {{ cart_item.quantity|add:"-1" }}}'
+                hx-target="closest .cart-container"
+                hx-swap="outerHTML"
+                hx-indicator="#spinner-{{ product.id }}"
+            >
+                −
+            </button>
+
+            <span class="text-base font-bold w-6 text-center">
+                {{ cart_item.quantity }}
+            </span>
+
+            <button
+                class="btn btn-sm btn-outline h-10 w-10 rounded-xl flex items-center justify-center"
+                hx-post="{% url 'sales:update_quantity' product.id %}?target_id={{ target_id }}"
+                hx-vals='{"quantity": {{ cart_item.quantity|add:"1" }}}'
+                hx-target="closest .cart-container"
+                hx-swap="outerHTML"
+                hx-indicator="#spinner-{{ product.id }}"
+            >
+                +
+            </button>
+
+            <span
+                id="spinner-{{ product.id }}"
+                class="htmx-indicator loading loading-spinner loading-sm"
+            ></span>
+
+        </div>
+
+    {% else %}
+        <form
+            class="flex items-center w-full"
+            hx-post="{% url 'sales:add_to_cart' product.id %}?target_id={{ target_id }}"
+            hx-target="closest .cart-container"
+            hx-swap="outerHTML"
+            hx-indicator="#spinner-{{ product.id }}"
+        >
+            {% csrf_token %}
+
+            <button class="btn btn-primary h-10 min-w-[90px] rounded-xl flex-1">
+                Add
+            </button>
+
+            <span
+                id="spinner-{{ product.id }}"
+                class="htmx-indicator loading loading-spinner loading-sm ml-2"
+            ></span>
+
+        </form>
+    {% endif %}
+
+    {% if toast_message %}
+        {% include "sales/toast.html" with message=toast_message %}
+    {% endif %}
+
+</div>

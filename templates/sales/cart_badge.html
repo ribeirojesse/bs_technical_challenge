@@ -1,0 +1,9 @@
+{% if cart_item_count > 0 %}
+<span id="item_count_badge">
+    {{ cart_item_count }}
+</span>
+{% else %}
+<span id="item_count_badge" class="hidden">
+    0
+</span>
+{% endif %}

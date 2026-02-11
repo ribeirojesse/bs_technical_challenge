@@ -147,3 +147,6 @@ dist
 .vscode/
 .cursor/
 uv.lock
+
+venv/
+.venv
